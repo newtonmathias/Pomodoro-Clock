@@ -1,18 +1,18 @@
 import React from 'react'
 
-const TimeControl = () => {
+const TimeControl = (props) => {
     return (
       <div>
        <div className="time-control row">
         <div id="session-label" className="col-md-6 text-center">
-          <button id="session-increment">+</button>
-          <span id="session-length">25</span>
-          <button id="session-decrement">-</button>
+          <button value= "+" id="session-increment" onClick = {props.handleSession}>+</button>
+          <span id="session-length">{props.sessionLength}</span>
+          <button value= "-" id="session-decrement" onClick = {props.handleSession}>-</button>
          </div>
         <div className="col-md-6 text-center" id="break-label">
-          <button id="break-increment">+</button>
-          <span id="break-length">5</span>
-          <button id="break-decrement">-</button>
+          <button value="+" id="break-increment" onClick = {props.handleBreak} >+</button>
+          <span id="break-length">{props.breakLength}</span>
+          <button value= "-" id="break-decrement" onClick = {props.handleBreak}>-</button>
          </div>
         </div>
         <div className="start-stop text-center">
