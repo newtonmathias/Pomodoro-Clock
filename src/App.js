@@ -12,6 +12,7 @@ class App extends Component{
     this.handleBreak = this.handleBreak.bind(this)
     this.handleSession = this.handleSession.bind(this)
     this.reset = this.reset.bind(this)
+    this.start = this.start.bind(this)
   }
 
   handleBreak (e)  {
@@ -57,6 +58,14 @@ class App extends Component{
       timer: 1500
     });
   }
+  start () {
+   setInterval(() => {
+    let prevState = this.state.timer;
+      this.setState({
+        timer: --prevState
+      });
+    }, 1000);
+  }
 
   render() {
     return (
@@ -70,6 +79,7 @@ class App extends Component{
         handleBreak = {this.handleBreak}
         handleSession = {this.handleSession}
         reset = {this.reset}
+        start = {this.start}
          />
       </div>
     );
