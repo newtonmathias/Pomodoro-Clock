@@ -17,7 +17,7 @@ const TimeControl = (props) => {
         </div>
         <div className="start-stop text-center">
           <button id="start_stop" className="btn btn-outline-success">Start</button>
-          <button id="reset" className="btn btn-outline-danger">Reset</button>
+          <button id="reset" className="btn btn-outline-danger" onClick = {props.reset}>Reset</button>
         </div>
       </div>
       
