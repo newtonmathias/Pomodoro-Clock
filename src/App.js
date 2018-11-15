@@ -7,7 +7,8 @@ class App extends Component{
     this.state = {
       sessionLength: 25,
       breakLength: 5,
-      timer: 1500
+      timer: 1500,
+      timerState: 'stopped'
     } 
     this.handleBreak = this.handleBreak.bind(this)
     this.handleSession = this.handleSession.bind(this)
@@ -29,24 +30,24 @@ class App extends Component{
         breakLength: prevState
       });
     }
-    
   }
 
   handleSession (e)  {
     let prevState = this.state.sessionLength;
-
-    if (e.target.value === '+' && prevState <60){
-      prevState = prevState + 1;
-      this.setState({
-        sessionLength: prevState,
-        timer: prevState * 60
-      });
-    } else if (e.target.value === '-' && prevState > 1){
-      prevState = prevState - 1;
-      this.setState({
-        sessionLength: prevState,
-        timer: prevState * 60
-      });
+    if(this.state.timerState === 'stopped') {
+      if (e.target.value === '+' && prevState <60){
+        prevState = prevState + 1;
+        this.setState({
+          sessionLength: prevState,
+          timer: prevState * 60
+        });
+      } else if (e.target.value === '-' && prevState > 1){
+        prevState = prevState - 1;
+        this.setState({
+          sessionLength: prevState,
+          timer: prevState * 60
+        });
+      }
     }
     
   }
@@ -59,12 +60,15 @@ class App extends Component{
     });
   }
   start () {
-   setInterval(() => {
-    let prevState = this.state.timer;
-      this.setState({
-        timer: --prevState
-      });
-    }, 1000);
+   if(this.state.timerState === 'stopped') {
+    setInterval(() => {
+      let prevState = this.state.timer;
+        this.setState({
+          timer: --prevState,
+          timerState: 'running'
+        });
+      }, 1000);
+   }
   }
 
   render() {
