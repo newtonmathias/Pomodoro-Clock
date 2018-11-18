@@ -53,21 +53,29 @@ class App extends Component{
   }
 
   reset () {
+    clearInterval(this.timer)
     this.setState({
       sessionLength: 25,
       breakLength: 5,
-      timer: 1500
+      timer: 1500,
+      timerState: 'stopped'
     });
   }
   start () {
    if(this.state.timerState === 'stopped') {
-    setInterval(() => {
-      let prevState = this.state.timer;
+    this.timer = setInterval(() => {
         this.setState({
-          timer: --prevState,
-          timerState: 'running'
+          timer: this.state.timer - 1,
         });
       }, 1000);
+      this.setState({
+        timerState: 'running'
+      });
+   } else if(this.state.timerState === 'running'){
+    clearInterval(this.timer)
+    this.setState({
+      timerState: 'stopped'
+    });
    }
   }
 
@@ -84,6 +92,7 @@ class App extends Component{
         handleSession = {this.handleSession}
         reset = {this.reset}
         start = {this.start}
+        timerState = {this.state.timerState}
          />
       </div>
     );
