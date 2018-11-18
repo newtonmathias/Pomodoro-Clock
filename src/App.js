@@ -8,7 +8,8 @@ class App extends Component{
       sessionLength: 25,
       breakLength: 5,
       timer: 1500,
-      timerState: 'stopped'
+      timerState: 'stopped',
+      sessionLabel: 'Session'
     } 
     this.handleBreak = this.handleBreak.bind(this)
     this.handleSession = this.handleSession.bind(this)
@@ -16,26 +17,44 @@ class App extends Component{
     this.start = this.start.bind(this)
   }
 
-  handleBreak (e)  {
-    let prevState = this.state.breakLength;
-
-    if (e.target.value === '+' && prevState <60){
-      prevState = prevState + 1;
+  componentDidUpdate() {
+    if(this.state.timer < 0 && this.state.sessionLabel === 'Session'){
       this.setState({
-        breakLength: prevState
+        timer: this.state.breakLength * 60,
+        sessionLabel: 'Break'
       });
-    } else if (e.target.value === '-' && prevState > 1){
-      prevState = prevState - 1;
+    }else if(this.state.timer < 0 && this.state.sessionLabel === 'Break'){
       this.setState({
-        breakLength: prevState
+        timer: this.state.sessionLength * 60,
+        sessionLabel: 'Session'
       });
     }
   }
 
+  handleBreak (e)  {
+    let prevState = this.state.breakLength;
+
+    if(this.state.timerState === 'stopped' && this.state.sessionLabel === 'Break'){
+    if (e.target.value === '+' && prevState <60){
+      prevState = prevState + 1;
+      this.setState({
+        breakLength: prevState,
+        timer: prevState * 60
+      });
+    } else if (e.target.value === '-' && prevState > 1){
+      prevState = prevState - 1;
+      this.setState({
+        breakLength: prevState,
+        timer: prevState * 60
+      });
+    }
+   }
+  }
+
   handleSession (e)  {
     let prevState = this.state.sessionLength;
-    if(this.state.timerState === 'stopped') {
-      if (e.target.value === '+' && prevState <60){
+    if(this.state.timerState === 'stopped' && this.state.sessionLabel === 'Session') {
+      if (e.target.value === '+' && prevState <60 ){
         prevState = prevState + 1;
         this.setState({
           sessionLength: prevState,
@@ -58,23 +77,42 @@ class App extends Component{
       sessionLength: 25,
       breakLength: 5,
       timer: 1500,
-      timerState: 'stopped'
+      timerState: 'stopped',
+      sessionLabel: 'Session'
     });
   }
   start () {
-   if(this.state.timerState === 'stopped') {
+   if(this.state.timerState === 'stopped' && this.state.sessionLabel === 'Session') {
     this.timer = setInterval(() => {
         this.setState({
           timer: this.state.timer - 1,
         });
       }, 1000);
       this.setState({
-        timerState: 'running'
+        timerState: 'running',
+        sessionLabel: 'Session'
       });
-   } else if(this.state.timerState === 'running'){
+   } else if(this.state.timerState === 'running' && this.state.sessionLabel === 'Session'){
     clearInterval(this.timer)
     this.setState({
-      timerState: 'stopped'
+      timerState: 'stopped',
+      sessionLabel: 'Session'
+    });
+   } else if(this.state.timerState === 'stopped' && this.state.sessionLabel === 'Break') {
+    this.timer = setInterval(() => {
+        this.setState({
+          timer: this.state.timer - 1,
+        });
+      }, 1000);
+      this.setState({
+        timerState: 'running',
+        sessionLabel: 'Break'
+      });
+   } else if(this.state.timerState === 'running' && this.state.sessionLabel === 'Break'){
+    clearInterval(this.timer)
+    this.setState({
+      timerState: 'stopped',
+      sessionLabel: 'Break'
     });
    }
   }
@@ -84,6 +122,7 @@ class App extends Component{
       <div className="jumbotron">
        <ProgressDisplay
        timer = {this.state.timer} 
+       sessionLabel = {this.state.sessionLabel}
        />
         <TimeControl 
         sessionLength = {this.state.sessionLength}

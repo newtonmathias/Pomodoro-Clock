@@ -8,6 +8,7 @@ const ProgressDisplay = (props) => {
   }${props.timer % 60}`
     return (
       <div className="time-display text-center">
+        <p>{props.sessionLabel}</p>
         <h1 id="timer-label">{timeLeft}</h1>
       </div>
     );
