@@ -19,6 +19,10 @@ const TimeControl = (props) => {
           <button id="start_stop" className="btn btn-outline-success" onClick={props.start}>{props.timerState ==='stopped'? 'Start' : 'Stop'}</button>
           <button id="reset" className="btn btn-outline-danger" onClick = {props.reset}>Reset</button>
         </div>
+        <audio
+          id="beep"
+          src="http://soundbible.com/grab.php?id=2210&type=wav"
+        />
       </div>
       
     );

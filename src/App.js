@@ -23,49 +23,69 @@ class App extends Component{
         timer: this.state.breakLength * 60,
         sessionLabel: 'Break'
       });
+      const beep = document.getElementById("beep");
+        beep.play();
     }else if(this.state.timer < 0 && this.state.sessionLabel === 'Break'){
       this.setState({
         timer: this.state.sessionLength * 60,
         sessionLabel: 'Session'
       });
+      const beep = document.getElementById("beep");
+        beep.play();
     }
   }
 
   handleBreak (e)  {
     let prevState = this.state.breakLength;
 
-    if(this.state.timerState === 'stopped' && this.state.sessionLabel === 'Break'){
+    if(this.state.timerState === 'stopped'){
     if (e.target.value === '+' && prevState <60){
       prevState = prevState + 1;
       this.setState({
         breakLength: prevState,
-        timer: prevState * 60
       });
+      if( this.state.sessionLabel === 'Break'){
+        this.setState({
+          timer: prevState * 60
+        });
+      }
     } else if (e.target.value === '-' && prevState > 1){
       prevState = prevState - 1;
       this.setState({
         breakLength: prevState,
-        timer: prevState * 60
       });
+      if( this.state.sessionLabel === 'Break'){
+        this.setState({
+          timer: prevState * 60
+        });
+      }
     }
    }
   }
 
   handleSession (e)  {
     let prevState = this.state.sessionLength;
-    if(this.state.timerState === 'stopped' && this.state.sessionLabel === 'Session') {
+    if(this.state.timerState === 'stopped') {
       if (e.target.value === '+' && prevState <60 ){
         prevState = prevState + 1;
         this.setState({
           sessionLength: prevState,
-          timer: prevState * 60
         });
+        if(this.state.sessionLabel === 'Session'){
+          this.setState({
+            timer: prevState * 60
+          });
+        }
       } else if (e.target.value === '-' && prevState > 1){
         prevState = prevState - 1;
         this.setState({
           sessionLength: prevState,
-          timer: prevState * 60
         });
+        if(this.state.sessionLabel === 'Session'){
+          this.setState({
+            timer: prevState * 60
+          });
+        }
       }
     }
     
