@@ -23,17 +23,17 @@ class App extends Component{
         timer: this.state.breakLength * 60,
         sessionLabel: 'Break'
       });
-      const beep = document.getElementById("beep");
-        beep.play();
+      this.beep = document.getElementById("beep");
+        this.beep.play();
     }else if(this.state.timer < 0 && this.state.sessionLabel === 'Break'){
       this.setState({
         timer: this.state.sessionLength * 60,
         sessionLabel: 'Session'
       });
-      const beep = document.getElementById("beep");
-        beep.play();
+        this.beep.play();
     }
   }
+
 
   handleBreak (e)  {
     let prevState = this.state.breakLength;
@@ -100,6 +100,9 @@ class App extends Component{
       timerState: 'stopped',
       sessionLabel: 'Session'
     });
+    this.beep = document.getElementById("beep");
+    this.beep.pause();
+    this.beep.currentTime = 0;
   }
   start () {
    if(this.state.timerState === 'stopped' && this.state.sessionLabel === 'Session') {
